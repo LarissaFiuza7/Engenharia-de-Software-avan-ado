@@ -29,7 +29,7 @@
 
 
 ## Tecnologias
-- **Linguagem/Framework**: 
+- **Linguagem/Framework**:  JavaScript(JS)
 - **Arquitetura**: SOA com serviços compartilhados (User, Payment, Search)
 
 
