@@ -27,13 +27,15 @@
 - Gerenciamento de pagamentos e histórico
 - Avaliação e feedback
 
+## Identificação de pontos de reuso no sistema. Cadastramento de usuário; Localização; Pagamento; Avaliação;
+## Levantamento de frameworks, bibliotecas e APIs reutilizáveis. BrasilAPI MongoDB FastAPI
 
 ## Tecnologias
-- **Linguagem/Framework**:  JavaScript(JS)
+- **Linguagem/Framework**:  JavaScript(JS), Python
 - **Arquitetura**: SOA com serviços compartilhados (User, Payment, Search)
 
 
 
 ---
 
-![Diagrama de Processos](diagrama-processos.png)
+
