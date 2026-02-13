@@ -1,5 +1,21 @@
 <div align="center">
-  <img width="400" height="400" alt="ChatGPT Image 6 de fev  de 2026, 20_14_36-Photoroom" src="https://github.com/user-attachments/assets/15c5edbb-8065-4c9f-b1f3-44483db215e1" />
+  <picture>
+    <source 
+      media="(prefers-color-scheme: dark)" 
+      srcset="https://github.com/user-attachments/assets/b40061a8-a25d-4ac3-919b-d1c35a114df3"
+    />
+    <source 
+      media="(prefers-color-scheme: light)" 
+      srcset="https://github.com/user-attachments/assets/1122ef45-0f4a-4fbb-b045-efa1cab891ca"
+    />
+    <img 
+      width="1536"
+      height="1024"
+      alt="MinasMoveVidas preview"
+      src="https://github.com/user-attachments/assets/1122ef45-0f4a-4fbb-b045-efa1cab891ca"
+    />
+  </picture>
+
   <h1>MinasMoveVidas</h1>
   <p>Plataforma SOA para aluguel unificado de veículos 🏎️ e casas 🏠</p>
 </div>
