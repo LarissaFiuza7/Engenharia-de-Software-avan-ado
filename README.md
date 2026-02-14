@@ -1,25 +1,11 @@
+
+
 <div align="center">
-  <picture>
-    <source 
-      media="(prefers-color-scheme: dark)" 
-      srcset="https://github.com/user-attachments/assets/b40061a8-a25d-4ac3-919b-d1c35a114df3"
-    />
-    <source 
-      media="(prefers-color-scheme: light)" 
-      srcset="https://github.com/user-attachments/assets/1122ef45-0f4a-4fbb-b045-efa1cab891ca"
-    />
-    <img 
-      width="1536"
-      height="1024"
-      alt="MinasMoveVidas preview"
-      src="https://github.com/user-attachments/assets/1122ef45-0f4a-4fbb-b045-efa1cab891ca"
-    />
-  </picture>
 
+  <img width="700" height="700" alt="ad1c05ef-a7b3-4efe-8b4d-1300bdc7a308 (1)" src="https://github.com/user-attachments/assets/e6580a55-e849-41c9-9011-d5c1915db7ce" />
   <h1>MinasMoveVidas</h1>
-  <p>Plataforma SOA para aluguel unificado de veículos 🏎️ e casas 🏠</p>
+  <p>Liberdade para ir, conforto para ficar</p>
 </div>
-
 
 
 # MinasMoveVidas
