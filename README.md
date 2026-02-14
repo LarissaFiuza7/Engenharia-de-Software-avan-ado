@@ -8,8 +8,6 @@
 </div>
 
 
-# MinasMoveVidas
-
 Plataforma SOA para aluguel unificado de veículos 🏎️ e casas 🏠.
 
 **MinasMoveVidas** é uma plataforma unificada para aluguel de veículos e imóveis, desenvolvida em arquitetura orientada a serviços (SOA). O sistema compartilha dados de usuários, localização, pagamentos e avaliações entre serviços, evitando fragmentação de cadastros e múltiplos logins.
