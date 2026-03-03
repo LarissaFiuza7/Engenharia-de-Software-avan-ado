@@ -8,163 +8,210 @@
 </div>
 
 
-Plataforma SOA para aluguel unificado de veículos 🏎️ e casas 🏠.
+# MinasMoveVidas
 
-**MinasMoveVidas** é uma plataforma unificada para aluguel de veículos e imóveis, desenvolvida em arquitetura orientada a serviços (SOA). O sistema compartilha dados de usuários, localização, pagamentos e avaliações entre serviços, evitando fragmentação de cadastros e múltiplos logins.
+Plataforma SOA para aluguel unificado de veículos 🏎️ e imóveis 🏠.
 
----
-
-## 📋 Sumário
-
-- [Visão Geral](#visão-geral)
-- [Funcionalidades](#funcionalidades)
-- [Processos de Negócio](#processos-de-negócio)
-- [Pontos de Reuso no Sistema](#pontos-de-reuso-no-sistema)
-- [Artefatos Reutilizáveis](#artefatos-reutilizáveis)
-- [Análise Técnica e Arquitetural do Reuso](#análise-técnica-e-arquitetural-do-reuso)
-- [Tecnologias](#tecnologias)
-- [Equipe](#equipe)
+O **MinasMoveVidas** centraliza o aluguel de bens em uma única solução, permitindo que locatários planejem viagens e estadias com mais praticidade e que locadores gerenciem seus bens em um só lugar.
 
 ---
 
-## Visão Geral
+## 📌 Sumário
 
-**Domínio do Sistema:** aluguel de bens (veículos e casas) em uma única plataforma.
-
-**Problema Resolvido:** hoje, locatários e locadores frequentemente precisam manter contas e cadastros separados em diferentes plataformas (ex.: uma para carros, outra para imóveis). O MinasMoveVidas unifica esses processos com um único login e um modelo de serviços compartilhados.
-
-**Usuários Principais:**
-
-- **Locatário:** busca, filtra, reserva e paga por veículos ou imóveis.
-- **Locador:** cadastra e gerencia veículos e/ou imóveis disponíveis para locação.
-
----
-
-## Funcionalidades
-
-- Cadastro e autenticação de usuários.
-- Cadastro e gerenciamento de veículos e imóveis.
-- Busca e filtragem por localização, disponibilidade, preço e tipo de bem.
-- Realização, cancelamento e gerenciamento de reservas.
-- Gerenciamento de pagamentos e histórico de transações.
-- Avaliação e feedback de locadores, locatários, veículos e imóveis.
+- [1. Objetivo do Projeto](#1-objetivo-do-projeto)
+- [2. Domínio e Visão Geral do Sistema](#2-domínio-e-visão-geral-do-sistema)
+- [3. Processos de Negócio](#3-processos-de-negócio)
+- [4. Casos de Uso (alto nível)](#4-casos-de-uso-alto-nível)
+- [5. Pontos de Reuso](#5-pontos-de-reuso)
+- [6. Artefatos Reutilizáveis e Tecnologias (ideias iniciais)](#6-artefatos-reutilizáveis-e-tecnologias-ideias-iniciais)
+- [7. Análise Técnica e Arquitetural (visão geral)](#7-análise-técnica-e-arquitetural-visão-geral)
+- [8. Benefícios e Riscos do Reuso](#8-benefícios-e-riscos-do-reuso)
+- [9. Espaços para Diagramas](#9-espaços-para-diagramas)
+- [10. Preparação do Ambiente](#10-preparação-do-ambiente)
+- [11. Equipe](#11-equipe)
 
 ---
 
-## Processos de Negócio
+## 1. Objetivo do Projeto
 
-Alguns processos principais modelados no sistema:
+Projeto desenvolvido na disciplina de **Engenharia de Software Avançada**, com foco em:
 
-- **Cadastro de usuário:** criação de conta única para atuar como locatário e/ou locador.
-- **Cadastro de bem:** registro de veículos e imóveis com fotos, descrição, localização e disponibilidade.
-- **Busca e reserva:** fluxo de busca por filtros (cidade, data, tipo), seleção do bem e confirmação da reserva.
-- **Pagamento:** cálculo do valor total (diárias, taxas) e registro do pagamento.
-- **Avaliação pós-uso:** após o término da locação, o usuário pode avaliar o bem e o locador.
+- Compreender o domínio de aluguel de bens.
+- Definir um sistema com arquitetura orientada a serviços (SOA).
+- Explorar **reuso de serviços, classes e artefatos**.
+- Evoluir modelagem (processos, casos de uso, componentes) ao longo dos laboratórios.
 
 ---
 
-## Pontos de Reuso no Sistema
+## 2. Domínio e Visão Geral do Sistema
 
-O sistema foi desenhado para maximizar o reuso de serviços e componentes entre os domínios de veículos e imóveis. Os principais pontos de reuso são:
+### 2.1 Domínio do Sistema
+
+- **Domínio:** aluguel de bens (veículos e imóveis).  
+- **Problema que resolve:** hoje, quem quer viajar costuma usar mais de uma plataforma (uma para carro, outra para hospedagem). O sistema busca centralizar essa experiência.  
+- **Usuários principais:**  
+  - Locatários  
+  - Locadores  
+
+### 2.2 Visão Geral
+
+- **Nome do sistema:** MinasMoveVidas  
+- **Ideia geral:**  
+  - Um único ambiente onde o usuário pode:
+    - Cadastrar-se.
+    - Cadastrar bens (se for locador).
+    - Buscar bens.
+    - Reservar e pagar.
+    - Avaliar experiências.
+
+---
+
+## 3. Processos de Negócio
+
+Modelados inicialmente de forma simplificada:
+
+- **Cadastro de Usuário**
+  - Usuário cria uma conta para utilizar a plataforma.
+- **Gerenciamento de Bem para Aluguel**
+  - Locador registra e gerencia veículos e imóveis.
+- **Busca**
+  - Locatário busca bens disponíveis conforme filtros (como localização, datas, tipo de bem).
+- **Pagamento e Reserva**
+  - Locatário seleciona um bem, realiza a reserva e efetua o pagamento.
+
+
+
+---
+
+## 4. Casos de Uso (alto nível)
+
+### UC-02 – Gerenciar Bem para Aluguel
+
+Locador cadastra e gerencia bens (veículos ou imóveis) que serão disponibilizados na plataforma.
+
+- Acessar área de gerenciamento.
+- Informar dados do bem.
+- Salvar/atualizar/remover bem.
+- Tornar o bem disponível para busca e reserva.
+
+
+---
+
+### UC-03 – Pagamento
+
+Locatário realiza o pagamento de uma reserva para concluir a locação.
+
+- Acessar reserva aprovada.
+- Visualizar resumo de valores.
+- Escolher forma de pagamento.
+- Confirmar pagamento.
+- Receber confirmação/comprovante.
+
+
+
+---
+
+### UC-05 – Gerenciar Reserva
+
+Locatário gerencia reservas desde a escolha do bem até a confirmação.
+
+- Buscar bens por tipo, localização e período.
+- Visualizar lista de opções.
+- Solicitar reserva.
+- Acompanhar aprovação pelo locador.
+- Prosseguir para pagamento após aprovação.
+
+
+
+---
+
+## 5. Pontos de Reuso
+
+Principais pontos em que o sistema foi pensado para reuso entre diferentes tipos de bens:
 
 - **Cadastramento de Usuário**
-  - Serviço único de identidade/autenticação para locadores e locatários.
-  - Compartilhado por todos os contextos (carros e casas), evitando múltiplos cadastros.
-
+  - Serviço de identificação/autenticação comum para locadores e locatários.
 - **Localização**
-  - Modelo de endereço e serviço de localização reutilizado por:
-    - Veículos (ex.: endereço da agência ou ponto de retirada).
-    - Imóveis (ex.: endereço do imóvel).
-  - Uso de CEP e dados geográficos padronizados.
-
+  - Representação e tratamento de endereços, usada tanto em usuários quanto em bens.
 - **Pagamento**
-  - Serviço de pagamento genérico capaz de tratar diferentes tipos de bens.
-  - Reúso de lógica de cálculo de valor, registro de transação e integração com meios de pagamento.
-
+  - Mesma lógica/serviço de pagamento para qualquer reserva (veículo ou imóvel).
 - **Avaliação**
-  - Modelo único de avaliação/feedback:
-    - Permite avaliar tanto veículos quanto imóveis, e também locadores/locatários.
-  - Mesma estrutura de notas, comentários e histórico para todos os tipos de locação.
+  - Modelo único de avaliação para bens e usuários, reaproveitado em diferentes fluxos.
 
-Esses serviços são pensados como **serviços de domínio compartilhado** em uma arquitetura orientada a serviços, podendo ser consumidos por diferentes front-ends ou microsserviços.
 
 ---
 
-## Artefatos Reutilizáveis
+## 6. Artefatos Reutilizáveis e Tecnologias (ideias iniciais)
 
-Levantamento de frameworks, bibliotecas e APIs reutilizáveis considerados no projeto:
+Ideias de frameworks, bibliotecas e APIs que podem ser reutilizadas no projeto:
 
 - **BrasilAPI**
-  - API pública brasileira com endpoints para CEP, CNPJ, FIPE (preços de veículos), bancos, entre outros.
-  - Possíveis usos:
-    - Validação de CEP no serviço de Localização.
-    - Validação de CNPJ/CPF no Cadastramento de Usuário.
-    - Uso de FIPE para apoiar precificação de veículos.
-
+  - Para consultas relacionadas a dados brasileiros (ex.: CEP, documentos, FIPE).
 - **MongoDB**
-  - Banco de dados NoSQL orientado a documentos.
-  - Possíveis usos:
-    - Armazenar usuários, reservas, avaliações e catálogos de bens com esquemas flexíveis.
-    - Modelar documentos diferentes para veículos e imóveis, mantendo campos comuns e específicos.
-
+  - Banco NoSQL para armazenar informações de usuários, bens, reservas e avaliações.
 - **FastAPI**
-  - Framework Python moderno para criação de APIs REST de alta performance.
-  - Possíveis usos:
-    - Implementar serviços de Usuário, Localização, Pagamento e Avaliação.
-    - Geração automática de documentação (OpenAPI/Swagger).
-    - Validação de dados de entrada usando modelos tipados (Pydantic).
+  - Framework em Python para construção de APIs e serviços.
 
-Esses artefatos são selecionados por favorecerem reuso, rapidez de desenvolvimento e integração com uma arquitetura SOA.
 
 ---
 
-## Análise Técnica e Arquitetural do Reuso
+## 7. Análise Técnica e Arquitetural (visão geral)
 
-### Benefícios do Reuso de Classes e Artefatos
+De forma geral, ao escolher esses artefatos e padrões de reuso, o projeto busca:
 
-- **Redução de esforço e tempo de desenvolvimento**
-  - Serviços compartilhados (ex.: Usuário, Localização) evitam reimplementações para veículos e imóveis.
-- **Consistência e qualidade**
-  - Um modelo único de avaliação e pagamento garante comportamento consistente em todo o sistema.
-- **Facilidade de manutenção**
-  - Correções e melhorias em um serviço compartilhado (por exemplo, validação de CEP) beneficiam todas as partes que o utilizam.
-- **Alinhamento com SOA**
-  - Serviços independentes e reutilizáveis permitem evolução gradual, substituição e escalabilidade.
+- Facilitar a comunicação entre serviços (SOA/APIs).
+- Permitir que **serviços compartilhem funcionalidades** (como autenticação, localização, pagamento).
+- Manter a arquitetura flexível para mudanças futuras (como adicionar novos tipos de bem).
 
-### Riscos e Cuidados no Reuso
-
-- **Acoplamento indesejado**
-  - Um serviço muito genérico ou com muitas responsabilidades pode criar dependências fortes entre domínios diferentes.
-  - Mitigação: separar bem responsabilidades (por exemplo, serviço de Usuário isolado de regras específicas de locação).
-
-- **Dependência de terceiros**
-  - APIs externas, como BrasilAPI, podem introduzir riscos de disponibilidade ou mudança de contrato.
-  - Mitigação: uso de cache local, tratamento de erros e camadas de abstração no serviço.
-
-- **Complexidade de evolução**
-  - Alterar um artefato reutilizado pode impactar múltiplos serviços e funcionalidades.
-  - Mitigação: versionamento de APIs, testes automatizados e boa documentação de contratos.
+Os detalhes de implementação (endpoints, modelos de dados, integrações específicas) ainda estão em definição e podem evoluir.
 
 ---
 
-## Tecnologias
+## 8. Benefícios e Riscos do Reuso
 
-- **Linguagens/Frameworks**
-  - JavaScript (JS)
-  - Python
-  - FastAPI (para serviços e APIs REST)
-- **Banco de Dados**
-  - MongoDB (modelagem de documentos para usuários, bens, reservas e avaliações)
-- **Arquitetura**
-  - SOA (Service-Oriented Architecture) com serviços compartilhados de:
-    - Usuário
-    - Pagamento
-    - Busca/Localização
-    - Avaliação
+### Benefícios esperados
+
+- Menos duplicação de lógica entre partes do sistema.
+- Consistência maior (mesmo fluxo de cadastro, pagamento, avaliação).
+- Facilidade de manutenção: alterar um serviço compartilhado atualiza o comportamento em todo o sistema.
+
+### Riscos a considerar
+
+- Dependência maior de componentes centrais (mudanças impactam vários módulos).
+- Uso de APIs externas (como BrasilAPI) introduz dependência de terceiros.
+- Necessidade de cuidado com versionamento e contratos de serviços.
 
 ---
 
-## Equipe
+## 9. Espaços para Diagramas
+
+Arquivos de imagem ainda podem ser adicionados conforme os modelos forem evoluindo:
+
+
+
+- Diagramas de casos de uso (UC-02, UC-03, UC-05, etc.)  
+  <img width="845" height="513" alt="{589C4A62-707E-4EA1-96DE-45BCB6A698E4}" src="https://github.com/user-attachments/assets/15e81cf6-c352-47d5-aabf-b488c612a1c0" />
+
+
+- Diagrama de componentes / serviços e interfaces  
+
+
+---
+
+## 10. Preparação do Ambiente
+
+Decisões iniciais (podem ser ajustadas durante o desenvolvimento):
+
+- Linguagem principal: **Python**  
+- Framework para APIs: **FastAPI**  
+- Banco de dados: **MongoDB**  
+- Controle de versão: **Git + GitHub**
+
+> Detalhes de instalação, comandos e estrutura de pastas serão adicionados quando a implementação se iniciar.
+
+---
+
+## 11. Equipe
 
 - **Kayky Pires** – Scrum Master  
 - **Rafael Dias** – Product Owner  
