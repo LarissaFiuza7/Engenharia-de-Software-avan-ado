@@ -9,7 +9,7 @@ app = FastAPI()
 # Se as credenciais ou o nome do banco de dados mudarem, basta atualizar esta função, e todas as partes do código que a utilizam serão automaticamente atualizadas. 
 # Isso torna o código mais limpo, organizado e fácil de manter.
 def conectar_banco():
-    return conn('manager_componet', '987321','componentsoftware','ComponentReservas','urkfjzm.mongodb.net')
+    return conn('Suas Credenciais')
 
 @app.post("/gerenciar-reserva/reservar-imovel/")
 def reservar_imovel(id_cliente, id_imovel, data_inicio, data_fim):
