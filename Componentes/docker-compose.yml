@@ -20,3 +20,14 @@ services:
     volumes:
       - ./GerenciarBensService/app:/code/app
       - ./conexao:/code/conexao
+
+  gerenciarreservas:
+    build:
+      context: .
+      dockerfile: ./GerenciarReservaService/Dockerfile
+    container_name: gerenciarreservas_api
+    ports:
+      - "8003:80"
+    volumes:
+      - ./GerenciarReservaService/app:/code/app
+      - ./conexao:/code/conexao
