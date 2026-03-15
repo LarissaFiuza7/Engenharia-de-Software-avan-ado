@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cadastro de Imovel</title>
+        <style>
+            input{
+                height: 30px;
+                width: 400px;
+                margin: 10px;
+            }
+
+            button {
+                height: 35px;
+                width: 100px;
+                margin: 10px;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <input type="text" id = "cep" placeholder="Digite o CEP do Imovel" onfocusout="buscarCep()"><br>
+        <input type="text" id = "endereco" placeholder="Digite o endereço do Imovel"><br>
+        <input type="text" id = "bairro" placeholder="Digite o bairro do Imovel"><br>
+        <input type="text" id = "cidade" placeholder="Digite a cidade do Imovel"><br>
+        <input type="text" id = "estado" placeholder="Digite o estado do Imovel"><br>
+        <input type="text" id = "numero" placeholder="Digite o número do Imovel"><br>
+        <input type="text" id = "complemento" placeholder="Digite o complemento do Imovel"><br>
+        <input type="text" id = "comodos" placeholder="Digite a quantidade de comodos do Imovel"><br>
+        <input type="text" id = "metros_quadrados" placeholder="Digite a quantidade de metros quadrados do Imovel"><br>
+        <input type="text" id = "valor" placeholder="Digite o valor do Imovel"><br>
+    
+        <button onclick="cadastrarImovel()" id = "cadastrar">Cadastrar Imovel</button>
+
+        <a href="./reservaImovel.html">Voltar para Reservar Imovel</a>
+        <a href="./reservaVeiculo.html">Voltar para Reservar Veículo</a>
+        <a href="./cadastrarVeiculo.html">Cadastrar Veículo</a>
+        
+        <script src="./js/cadastroImovel.js"></script>
+        
+    </body>
+</html>
+

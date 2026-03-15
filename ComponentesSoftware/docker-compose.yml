@@ -1,0 +1,34 @@
+services:
+  clientes:
+    build:
+      context: .
+      dockerfile: ./Componentes/ClienteService/Dockerfile
+    container_name: clientes_api
+    ports:
+      - "8001:80"
+    volumes:
+      - ./Componentes/ClienteService/app:/code/app
+      - ./conexao:/code/conexao
+
+  gerenciarbens:
+    build:
+      context: .
+      dockerfile: ./Componentes/GerenciarBensService/Dockerfile
+    container_name: gerenciarbens_api
+    ports:
+      - "8002:80"
+    volumes:
+      - ./Componentes/GerenciarBensService/app:/code/app
+      - ./conexao:/code/conexao
+
+  gerenciarreservas:
+    build:
+      context: .
+      dockerfile: ./Componentes/GerenciarReservaService/Dockerfile
+    container_name: gerenciarreservas_api
+    ports:
+      - "8003:80"
+    volumes:
+      - ./Componentes/GerenciarReservaService/app:/code/app
+      - ./conexao:/code/conexao
+    

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cadastro de Imovel</title>
+        <style>
+            input{
+                height: 30px;
+                width: 400px;
+                margin: 10px;
+            }
+
+            button {
+                height: 35px;
+                width: 100px;
+                margin: 10px;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <input type="text" id = "marca" placeholder="Digite a marca do veículo"><br>
+        <input type="text" id = "modelo" placeholder="Digite o modelo do veículo"><br>
+        <input type="text" id = "ano" placeholder="Digite o ano do veículo"><br>
+        <input type="text" id = "valor" placeholder="Digite o valor do veículo"><br>
+        <input type="text" id = "cep" placeholder="Digite o CEP do veículo" onfocusout="buscarCep()"><br>
+        <input type="text" id = "endereco" placeholder="Digite o endereço do veículo"><br>
+        <input type="text" id = "bairro" placeholder="Digite o bairro do veículo"><br>
+        <input type="text" id = "cidade" placeholder="Digite a cidade do veículo"><br>
+        <input type="text" id = "estado" placeholder="Digite o estado do veículo"><br>
+        <input type="text" id = "numero" placeholder="Digite o número do veículo"><br>
+
+        <button onclick="cadastrarVeiculo()" id = "cadastrar">Cadastrar Veículo</button>
+
+        <a href="./reservaImovel.html">Voltar para Reservar Imovel</a>
+        <a href="./reservaVeiculo.html">Voltar para Reservar Veículo</a>
+        <a href="./cadastrarImovel.html">Cadastrar Imovel</a>
+        
+        <script src="./js/cadastroVeiculo.js"></script>
+        
+    </body>
+</html>
+

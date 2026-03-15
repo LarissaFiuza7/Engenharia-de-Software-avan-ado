@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserva de Veiculos</title>
+
+    <style>
+        .container{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card{
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card h3{
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Veiculos disponíveis</h1>
+
+    <input type="date" id="data_inicio" required>
+    <input type="date" id="data_fim" required>
+
+    <div id="listaVeiculos" class="container"></div>
+
+    <button onclick="logout()">Logout</button>
+
+    <a href="./cadastrarImovel.html">Cadastrar Imovel</a>
+    <a href="./cadastrarVeiculo.html">Cadastrar Veículo</a>
+    <a href="./reservaImovel.html">Reservar Imóvel</a>
+    
+    <script src="./js/reservaVeiculo.js"></script>
+
+</body>
+</html>
