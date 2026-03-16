@@ -213,6 +213,60 @@ Decisões iniciais (podem ser ajustadas durante o desenvolvimento):
 
 ## 11 - Componentes Implementados
 
+ClienteService:
+  Este componente foi implementado com FastAPI e tem como objetivo central gerenciar as informações dos clientes no sistema. 
+  Ele permite realizar operações de listagem, autenticação, busca por identificador e cadastro de novos clientes.
+  O componente atua como uma camada intermediária entre o cliente da aplicação e o banco de dados MongoDB, 
+  recebendo requisições HTTP, processando regras de negócio e retornando respostas em formato JSON.
+
+  Interfaces Fornecidas:
+    get_clientes()
+    login_cliente(email, senha)
+    get_cliente(id_cliente: str)
+    post_cliente(nome,cpf,email,senha,data_nascimento,numero_telefone)
+
+    OBS> Interfaces sofrerão alteração nos nomes futuramente.
+  Esse componente atua de forma independente, pois não necessita de outros componentes para seu funcionamento.
+  
+GerenciarBensService:
+  O componente Gerenciar Bens foi desenvolvido utilizando o framework FastAPI e tem como objetivo realizar o 
+  gerenciamento de bens cadastrados no sistema, incluindo imóveis e veículos.
+  Esse componente é responsável por disponibilizar serviços de consulta, cadastro e filtragem de bens armazenados no banco de dados MongoDB. 
+  Ele atua como uma camada intermediária entre o banco de dados e os consumidores da API, como aplicações front-end ou outros serviços do sistema.
+
+  Interfaces Fornecidas:
+    listar_imoveis()
+    listar_imoveis_filtrados(cidade: Optional[str] = None,estado: Optional[str] = None,qtde_comodos: Optional[int] = None)
+    buscar_imovel(id)
+    cadastrar_bem_imovel(cep,endereco,bairro,cidade,estado,numero,complemento,qtde_comodos,metros_quadrados,valor,proprietario)
+    cadastrar_bem_veiculo(marca,modelo,ano,valor,cep,endereco,bairro,cidade,estado,numero,proprietario)
+    listar_veiculos()
+    buscar_veiculo(id)
+    listar_veiculos_filtrados(cidade: Optional[str] = None,estado: Optional[str] = None,marca: Optional[str] = None,modelo: Optional[str] = None,ano: Optional[int] = None)
+
+    OBS> Interfaces sofrerão alteração nos nomes futuramente.
+  Esse componente atua de forma independente, pois não necessita de outros componentes para seu funcionamento.
+
+GerenciarReservaService:
+  O componente Gerenciar Reserva foi desenvolvido com FastAPI e tem como finalidade controlar o processo de reserva de bens no sistema, 
+  contemplando dois tipos principais: imóveis e veículos.
+  Esse componente é responsável por receber solicitações de reserva, validar a existência do bem solicitado, verificar se o período informado está disponível e, 
+  caso não exista conflito de datas, registrar a reserva no banco de dados.
+  Assim, ele funciona como a camada responsável pela regra de negócio das reservas, 
+  intermediando a comunicação entre o usuário, o banco de dados e o componente de Gerenciar Bens.
+
+  Interface Fornecidas: 
+    reservar_imovel(cpf_cliente, nome_cliente, id_imovel, data_inicio, data_fim)
+    reservar_veiculo(cpf_cliente,nome_cliente, id_veiculo, data_inicio, data_fim)
+
+  Interfaces Requiridas:
+    GerenciarBensService-> buscar_imovel(id)
+                           buscar_veiculo(id)
+
+  A comunicação feita entre o componente de Bens e Reserva é feito via API, 
+  Onde o componente de Reserva consome os endpoints de busca de imovel para realizar a reserva,
+  Assim evitando o acoplamento dos componentes.
+  
 ## 12 - Execução do Projeto
 
   Adicione os paramentros de conexão na função do banco de dados (MongoDB) em cada componente.
