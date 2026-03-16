@@ -202,10 +202,10 @@ Arquivos de imagem ainda podem ser adicionados conforme os modelos forem evoluin
 
 Decisões iniciais (podem ser ajustadas durante o desenvolvimento):
 
-- Linguagem principal: **Python**  
+- Linguagem principal: **Python e JavaScript**  
 - Framework para APIs: **FastAPI**  
 - Banco de dados: **MongoDB**  
-- Controle de versão: **Git + GitHub**
+- Controle de versão: **GitHub**
 
 > Detalhes de instalação, comandos e estrutura de pastas serão adicionados quando a implementação se iniciar.
 
