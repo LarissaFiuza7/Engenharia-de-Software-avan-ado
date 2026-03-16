@@ -1,338 +1,301 @@
 
 # Componentes de Software – MinasMoveVidas
 
-Este documento descreve, sob a perspectiva de Engenharia de Software Orientada a Serviços e a Componentes, a organização dos componentes implementados em ComponentesSoftware, suas interfaces fornecidas e requeridas, a forma de comunicação entre eles, o uso de Docker Compose e as decisões de projeto adotadas para redução de acoplamento.
+Este documento descreve, com base no código atual do repositório, a organização dos componentes implementados em `ComponentesSoftware`, suas interfaces fornecidas e requeridas, a comunicação entre eles e o uso de **Docker Compose**, considerando o estado atual do projeto: serviços em **FastAPI** com conexão ao **MongoDB**, ainda sem frontend funcionando.
 
 ---
 
-# 1. Visão Conceitual dos Componentes
+# Visão Conceitual dos Componentes
 
-Na disciplina, um componente de software pode ser entendido como uma unidade de implementação que:
+Na disciplina, um **componente de software** é entendido como uma unidade de implementação que:
 
 - Encapsula um conjunto coeso de responsabilidades.
-- Expõe interfaces fornecidas formalmente especificadas.
-- Declara interfaces requeridas das quais depende para funcionar.
-- Pode ser implantado, substituído e evoluído de forma relativamente independente, desde que mantenha seus contratos de interface.
+- Expõe **interfaces fornecidas** bem definidas (o que o componente oferece).
+- Declara **interfaces requeridas** (de que o componente precisa para funcionar).
+- Pode ser implantado e evoluído de maneira relativamente independente, desde que mantenha seus contratos de interface.
 
-No contexto deste projeto, trabalhamos principalmente com dois grupos de componentes:
+No projeto **MinasMoveVidas**, o diretório `ComponentesSoftware` concentra, neste momento, principalmente:
 
-## Componentes de serviço (backend)
+- **Componentes de serviço (backend)**, implementados em **Python com FastAPI**, responsáveis pelas regras de negócio ligadas a clientes, bens e reservas.
+- **Um componente de infraestrutura de dados**, responsável pela conexão com o banco de dados **MongoDB**.
 
-Implementados em Python e expostos via HTTP:
+A parte de **frontend web** existe apenas em nível de intenção/projeto, mas ainda não está integrada nem funcionando; por isso, neste documento o foco permanece nos componentes **FastAPI** e na conexão com o **MongoDB**.
 
-Componentes/ClienteService  
-Componentes/GerenciarBensService  
-Componentes/GerenciarReservaService  
+---
 
-## Componente de infraestrutura de dados
+# Descrição dos Dois Componentes Principais
 
-Módulo responsável pela conexão com o banco de dados:
+Para fins da disciplina, destacam‑se dois componentes principais, que de fato estão presentes no código:
 
+- **Componente de serviço de domínio (FastAPI)**
+- **Componente de infraestrutura de dados (conexão com MongoDB)**
+
+---
+
+## 2.1 Componente de Serviço de Domínio (FastAPI)
+
+O componente de serviço de domínio é representado pelos serviços implementados em **FastAPI** dentro de `ComponentesSoftware` (por exemplo, serviços responsáveis por clientes, bens ou reservas, dependendo dos arquivos já criados).
+
+### Responsabilidades
+
+- Implementar as **regras de negócio básicas** previstas para o sistema MinasMoveVidas (como operações sobre entidades de usuários, bens e reservas).
+- Expor uma **API REST** por meio de **endpoints HTTP**, utilizando FastAPI.
+- Validar e processar os dados recebidos pelas requisições (mesmo que, no momento, os clientes sejam apenas ferramentas como `curl`, navegador ou testes manuais).
+- Interagir com o componente de infraestrutura de dados para **salvar e recuperar informações no MongoDB**.
+
+Conceitualmente, esse componente é um **componente de serviço de domínio** porque centraliza as regras de negócio e a lógica de acesso às funcionalidades do sistema via FastAPI, sem tratar diretamente de interface gráfica.
+
+---
+
+## 2.2 Componente de Infraestrutura de Dados (Conexão com MongoDB)
+
+O componente de infraestrutura de dados está representado pelo código em `conexao`, especialmente o arquivo:
+
+```
 conexao/conexao_mongo.py
+```
 
-Também existe um componente de apresentação (frontend) localizado em:
+### Responsabilidades
 
-Componentes/FrontendService/app
+- Encapsular os detalhes de criação e configuração da conexão com o banco **MongoDB**.
+- Oferecer funções ou objetos que permitem aos serviços FastAPI acessar as coleções necessárias (como coleções de usuários, bens e reservas).
+- Servir de **camada de abstração** entre a lógica de negócio e a tecnologia específica de armazenamento.
 
-Ele é responsável pela interação com o usuário e se comporta como cliente das APIs de backend.
-
----
-
-# 2. Descrição dos Componentes Principais
-
-Embora o sistema tenha mais de um serviço, para fins de relatório de componentes a ênfase está em dois componentes conceituais:
-
-- Componente de Serviço de Domínio
-- Componente de Infraestrutura de Dados
+Desse modo, esse componente é classificado como **componente de infraestrutura**, pois fornece um serviço técnico (persistência de dados) aos componentes de serviço de domínio.
 
 ---
 
-# 2.1 Componente de Serviço de Domínio (ClienteService)
+# Interfaces Fornecidas
 
-O componente de serviço de domínio é representado por serviços de backend como:
+## 3.1 Interfaces Fornecidas pelos Componentes de Serviço (FastAPI)
 
-- ClienteService
-- GerenciarBensService
-- GerenciarReservaService
+Os componentes de serviço de domínio fornecem suas funcionalidades por meio de uma **interface REST**, implementada com **FastAPI**.
 
-## Responsabilidades
+Essa interface é composta por **endpoints HTTP** que representam operações do sistema.
 
-- Implementar regras de negócio de um subdomínio específico (clientes, bens ou reservas).
-- Orquestrar o acesso ao banco de dados via conexao_mongo.
-- Expor APIs REST para consumo por outros componentes.
+### Operações típicas
 
-Arquiteturalmente este componente:
+- Consultar entidades (listar ou buscar registros)
+- Inserir novas informações (criar registros)
+- Atualizar dados existentes
+- Remover registros, quando aplicável
 
-- Não se confunde com o banco de dados (infraestrutura)
-- Não se confunde com o frontend (apresentação)
-- Fornece operações de alto nível sobre entidades de negócio
+Na prática, existem **rotas definidas nos arquivos FastAPI**, expostas em portas configuradas no `docker-compose.yml`.
 
-Exemplos de entidades:
+Cada rota corresponde a uma **operação do domínio**, como:
 
-- Cliente
-- Bem
-- Reserva
+- operações sobre usuários
+- operações sobre bens
+- operações sobre reservas
 
----
-
-# 2.2 Componente de Infraestrutura de Dados (conexao_mongo)
-
-O diretório conexao contém o componente de infraestrutura de dados.
-
-Arquivo principal:
-
-conexao/conexao_mongo.py
-
-## Responsabilidades
-
-- Encapsular configuração e criação da conexão com MongoDB
-- Disponibilizar acesso às coleções de dados
-- Centralizar políticas de tratamento de erro
-- Facilitar o reuso de conexões
-
-Esse componente não contém regras de negócio, apenas serviços de acesso a dados.
+Mesmo sem frontend, qualquer **cliente HTTP** (Postman, navegador ou scripts) pode consumir essa interface.
 
 ---
 
-# 3. Interfaces Fornecidas
+## 3.2 Interface Fornecida pelo Componente de Conexão (MongoDB)
 
-## 3.1 Interfaces fornecidas pelos serviços
+O componente de conexão com o MongoDB fornece uma **interface programática**, utilizada dentro do código Python dos serviços FastAPI.
 
-Cada serviço fornece uma API REST exposta via HTTP.
+Essa interface inclui:
 
-As operações incluem:
+- Funções ou classes para **inicializar e obter o cliente de banco de dados**
+- Funções de apoio para acessar **bases e coleções específicas**
+- Eventualmente, funções que **padronizam operações de leitura e escrita**
 
-- Consultas
-- Criação / Atualização
-- Remoção
-
-### ClienteService (porta 8001)
-
-GET /clientes  
-POST /clientes  
-
-### GerenciarBensService (porta 8002)
-
-GET /bens  
-POST /bens  
-
-### GerenciarReservaService (porta 8003)
-
-GET /reservas  
-POST /reservas  
-
-Essas APIs REST constituem a interface fornecida pelos componentes de serviço.
-
-Podem ser consumidas por:
-
-- Frontend
-- Outros serviços
-- Scripts ou ferramentas HTTP
+Essa interface é **interna ao backend** e evita que cada serviço implemente individualmente a lógica de conexão com o banco.
 
 ---
 
-## 3.2 Interface fornecida por conexao_mongo
+# Interfaces Requeridas
 
-O componente conexao_mongo fornece uma interface programática em Python.
+## 4.1 Interfaces Requeridas pelos Componentes de Serviço
 
-Ela inclui:
+Os componentes de serviço de domínio requerem duas interfaces principais.
 
-- Funções para criação de clientes MongoDB
-- Funções para acesso a bancos e coleções
+### a) Interface de acesso a dados (MongoDB)
 
-Essa interface é interna e utilizada apenas pelos serviços de backend.
+Fornecida pelo **componente de conexão**.
 
----
+Os serviços precisam **armazenar e recuperar informações**.  
+Em vez de manipular diretamente o driver e a URI do MongoDB em cada serviço, eles utilizam a interface centralizada disponibilizada pelo módulo de conexão.
 
-# 4. Interfaces Requeridas
+### b) Interface de infraestrutura de rede (FastAPI)
 
-## 4.1 Interfaces requeridas pelos serviços
+Os serviços dependem do **servidor HTTP criado pelo FastAPI**, normalmente executado via:
 
-Os serviços dependem de duas categorias principais:
+```
+uvicorn
+```
 
-### Interface de Dados
+ou dentro de um contêiner Docker.
 
-Fornecida por:
+Essa interface permite:
 
-conexao_mongo
+- receber requisições HTTP
+- enviar respostas adequadas
 
-Responsável por abstrair a conexão com o MongoDB.
-
-### Interface de Infraestrutura HTTP
-
-Fornecida pelo framework web utilizado (por exemplo FastAPI).
-
-Ela permite que o serviço escute requisições HTTP e responda clientes externos.
+Assim, os serviços requerem a interface de conexão com o banco e a infraestrutura HTTP sem depender diretamente dos detalhes técnicos.
 
 ---
 
-## 4.2 Interfaces requeridas por conexao_mongo
+## 4.2 Interfaces Requeridas pelo Componente de Conexão (MongoDB)
 
-O módulo de conexão depende de:
+O componente de conexão com o MongoDB requer:
 
-- Driver MongoDB instalado via requirements.txt
-- Servidor MongoDB em execução
+- A interface fornecida pelo **driver MongoDB** instalado via `requirements.txt`
+- Um **servidor MongoDB em execução**
 
-Exemplo no Docker Compose:
+No cenário com Docker Compose, essa URI aponta para o serviço:
 
+```
 mongodb
+```
 
-Assim, conexao_mongo atua como um adaptador entre serviços e banco de dados.
+definido no arquivo `docker-compose.yml`.
 
----
+Assim:
 
-# 5. Comunicação entre Componentes
-
-## 5.1 Comunicação Frontend → Serviços
-
-A comunicação segue o padrão cliente-servidor via HTTP.
-
-Fluxo:
-
-1. Usuário interage com a interface web.
-2. O JavaScript do frontend envia requisições HTTP.
-3. Os serviços processam a requisição.
-4. As respostas são retornadas em JSON.
-5. O frontend atualiza a interface.
-
-Exemplos de endpoints consumidos:
-
-http://localhost:8001/clientes  
-http://localhost:8002/bens  
-http://localhost:8003/reservas  
-
-O frontend depende apenas da interface REST, não da implementação interna.
+- `conexao_mongo` depende diretamente da tecnologia MongoDB
+- os serviços de domínio dependem **apenas desse módulo**, e não do driver do banco
 
 ---
 
-## 5.2 Comunicação Serviços → MongoDB
+# Comunicação entre os Componentes
 
-A comunicação ocorre através do módulo conexao_mongo.
+## 5.1 Comunicação entre Serviços de Domínio e MongoDB
 
-Fluxo:
+Como ainda não existe frontend funcional, o fluxo principal de comunicação ocorre entre:
 
-1. Serviço recebe requisição HTTP
-2. Serviço solicita acesso ao banco
-3. conexao_mongo executa operação no MongoDB
-4. Resultado retorna ao serviço
-5. Serviço responde em JSON
+- **Serviços FastAPI**
+- **Banco MongoDB**
 
-Essa abordagem desacopla os serviços da infraestrutura de banco.
+Fluxo conceitual:
 
----
+1. O serviço FastAPI recebe uma requisição HTTP (ex.: via Postman).
+2. O serviço precisa consultar ou alterar dados.
+3. O serviço chama funções do módulo `conexao_mongo`.
+4. O módulo acessa o MongoDB.
+5. O resultado retorna ao serviço FastAPI.
+6. O serviço transforma o resultado em **resposta HTTP (JSON)**.
 
-## 5.3 Papel do Docker Compose
-
-O arquivo docker-compose.yml define como os componentes são executados.
-
-Funções:
-
-- Definir serviços Docker
-- Configurar portas
-- Criar rede interna
-- Montar volumes
-
-Exemplo de serviços:
-
-- clientes
-- bens
-- reservas
-- mongodb
-- frontend
-
-Cada serviço roda em um contêiner isolado, mas conectado à mesma rede.
+Essa divisão evita repetição de código de conexão com o banco.
 
 ---
 
-# 6. Justificativa de Arquitetura
+## 5.2 Papel do Docker Compose na Comunicação
 
-## 6.1 Separação de Responsabilidades
+O arquivo:
 
-O sistema separa:
+```
+docker-compose.yml
+```
 
-- Serviços de domínio
-- Infraestrutura de dados
-- Camada de apresentação
+é responsável por **orquestrar os contêineres**.
 
-Isso reduz o acoplamento funcional.
+Funções do Docker Compose:
 
----
+- Definir um serviço para o **MongoDB**
+- Definir serviços para os **componentes FastAPI**
+- Criar uma **rede Docker comum**
+- Permitir acesso ao MongoDB pelo nome do serviço (`mongodb`)
+- Mapear volumes com o código fonte
 
-## 6.2 Uso de Interfaces
-
-Cada componente possui:
-
-- Interfaces fornecidas
-- Interfaces requeridas
-
-Exemplos:
-
-- APIs REST
-- módulo conexao_mongo
-
-Isso garante contratos claros entre componentes.
+Assim, cada componente roda em **contêiner isolado**, comunicando‑se por interfaces definidas.
 
 ---
 
-## 6.3 Encapsulamento da Infraestrutura
+# Justificativa: Como o Acoplamento Direto Foi Evitado
 
-O acesso ao MongoDB foi centralizado em conexao_mongo.
+Mesmo sem frontend, o projeto já evita acoplamento direto por meio de:
 
-Assim os serviços não precisam conhecer:
+### Separação de responsabilidades
 
-- URI de conexão
-- credenciais
-- detalhes do driver
+- FastAPI → regras de negócio e endpoints
+- Conexão → acesso ao MongoDB
 
-Isso facilita mudanças futuras na infraestrutura.
+### Uso de interfaces
+
+- Rotas HTTP representam a **interface fornecida**
+- Funções do módulo de conexão representam a **interface de acesso ao banco**
+
+### Encapsulamento da infraestrutura
+
+Detalhes como:
+
+- URI do banco
+- configuração do cliente
+- parâmetros do MongoDB
+
+ficam isolados no módulo de conexão.
+
+### Isolamento na implantação
+
+FastAPI e MongoDB executam em **contêineres Docker separados**, comunicando‑se apenas por interfaces formais.
+
+Essas decisões aproximam o projeto dos princípios de:
+
+- **Engenharia de Componentes**
+- **Arquitetura Orientada a Serviços**
 
 ---
 
-## 6.4 Isolamento com Docker
+# Instruções para Execução do Projeto
 
-Com Docker Compose:
+## 7.1 Execução com Docker Compose (Recomendada)
 
-- cada serviço roda em contêiner próprio
-- comunicação ocorre via rede
-- não existem chamadas diretas entre processos
-
-Isso reduz o acoplamento temporal e espacial e aproxima o sistema de uma arquitetura baseada em microsserviços.
-
----
-
-# 7. Execução do Projeto
-
-## 7.1 Executar com Docker Compose
-
-Instale:
+Certifique‑se de possuir:
 
 - Docker
 - Docker Compose
 
-Entre no diretório do projeto:
+No terminal:
 
+```
 cd ComponentesSoftware
+```
 
-Construa as imagens:
+Construir as imagens:
 
+```
 docker compose build
+```
 
-Suba os serviços:
+Subir os serviços:
 
+```
 docker compose up
+```
 
----
+Com os contêineres em execução, utilize ferramentas como:
 
-## Serviços disponíveis
+- navegador
+- curl
+- Postman
 
-ClienteService → http://localhost:8001  
-GerenciarBensService → http://localhost:8002  
-GerenciarReservaService → http://localhost:8003  
+para testar os endpoints FastAPI.
 
-O Frontend estará disponível na porta configurada no docker-compose.yml.
+Para encerrar os serviços:
 
----
-
-## Encerrar execução
-
+```
 docker compose down
+```
+
+---
+
+## 7.2 Execução Local sem Docker (Alternativa)
+
+1. Garanta que o **MongoDB esteja em execução**
+2. No diretório `ComponentesSoftware`, crie um ambiente virtual Python
+3. Instale as dependências:
+
+```
+pip install -r requirements.txt
+```
+
+4. Execute o serviço FastAPI (exemplo):
+
+```
+uvicorn main:app --reload --port 8000
+```
+
+5. Teste os endpoints usando navegador, curl ou Postman.
