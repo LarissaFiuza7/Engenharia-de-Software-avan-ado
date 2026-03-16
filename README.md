@@ -211,11 +211,3 @@ Decisões iniciais (podem ser ajustadas durante o desenvolvimento):
 
 ---
 
-## 11. Equipe
-
-- **Kayky Pires** – Scrum Master  
-- **Rafael Dias** – Product Owner  
-- **Larissa Santos Fiuza** – Desenvolvedora  
-- **Beatriz Cristina** – Desenvolvedora  
-
----
