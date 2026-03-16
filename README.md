@@ -327,10 +327,15 @@ Essa abordagem evita **acoplamento direto entre os componentes**, permitindo mai
 ### Configuração do MongoDB
 
   1 - Crie uma conta no MongoDB
+  
   2 - Crie um cluster com o nome de "componentSoftware"
+  
   3 - Crie 3 Colletions nesse cluster: "ComponentClientes", "ComponentBens" e "ComponentReserva".
+  
   4.1 - No ComponentClientes crie a coleção nomeada de "clientes"
+  
   4.2 - No ComponentBens crie as coleções nomeadas de : "imoveis" e "veiculos"
+  
   4.3 - No ComponentReserva crie as coleçõoes nomeadas de : "reservaImovel" e "reservaVeiculo"
 
 ### Execução do Docker
