@@ -32,3 +32,10 @@ services:
       - ./Componentes/GerenciarReservaService/app:/code/app
       - ./conexao:/code/conexao
     
+  frontend:
+    build:
+      context: .
+      dockerfile: ./Componentes/FrontendService/Dockerfile
+    container_name: frontend_web
+    ports:
+      - "8080:80"
