@@ -211,3 +211,11 @@ Decisões iniciais (podem ser ajustadas durante o desenvolvimento):
 
 ---
 
+## 11 - Componentes Implementados
+
+## 12 - Execução do Projeto
+
+  Adicione os paramentros de conexão na função do banco de dados (MongoDB) em cada componente.
+  
+  Execute no terminal o comando: docker compose up --build
+
