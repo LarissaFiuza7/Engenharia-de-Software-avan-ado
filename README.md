@@ -213,63 +213,130 @@ Decisões iniciais (podem ser ajustadas durante o desenvolvimento):
 
 ## 11 - Componentes Implementados
 
-ClienteService:
-  Este componente foi implementado com FastAPI e tem como objetivo central gerenciar as informações dos clientes no sistema. 
-  Ele permite realizar operações de listagem, autenticação, busca por identificador e cadastro de novos clientes.
-  O componente atua como uma camada intermediária entre o cliente da aplicação e o banco de dados MongoDB, 
-  recebendo requisições HTTP, processando regras de negócio e retornando respostas em formato JSON.
+### ClienteService
 
-  Interfaces Fornecidas:
-    get_clientes()
-    login_cliente(email, senha)
-    get_cliente(id_cliente: str)
-    post_cliente(nome,cpf,email,senha,data_nascimento,numero_telefone)
+O componente **ClienteService** foi implementado utilizando **FastAPI** e tem como objetivo central gerenciar as informações dos clientes no sistema.
 
-    OBS> Interfaces sofrerão alteração nos nomes futuramente.
-  Esse componente atua de forma independente, pois não necessita de outros componentes para seu funcionamento.
-  
-GerenciarBensService:
-  O componente Gerenciar Bens foi desenvolvido utilizando o framework FastAPI e tem como objetivo realizar o 
-  gerenciamento de bens cadastrados no sistema, incluindo imóveis e veículos.
-  Esse componente é responsável por disponibilizar serviços de consulta, cadastro e filtragem de bens armazenados no banco de dados MongoDB. 
-  Ele atua como uma camada intermediária entre o banco de dados e os consumidores da API, como aplicações front-end ou outros serviços do sistema.
+Ele permite realizar operações de listagem, autenticação, busca por identificador e cadastro de novos clientes.
 
-  Interfaces Fornecidas:
-    listar_imoveis()
-    listar_imoveis_filtrados(cidade: Optional[str] = None,estado: Optional[str] = None,qtde_comodos: Optional[int] = None)
-    buscar_imovel(id)
-    cadastrar_bem_imovel(cep,endereco,bairro,cidade,estado,numero,complemento,qtde_comodos,metros_quadrados,valor,proprietario)
-    cadastrar_bem_veiculo(marca,modelo,ano,valor,cep,endereco,bairro,cidade,estado,numero,proprietario)
-    listar_veiculos()
-    buscar_veiculo(id)
-    listar_veiculos_filtrados(cidade: Optional[str] = None,estado: Optional[str] = None,marca: Optional[str] = None,modelo: Optional[str] = None,ano: Optional[int] = None)
+O componente atua como uma camada intermediária entre o cliente da aplicação e o banco de dados **MongoDB**, recebendo requisições HTTP, processando regras de negócio e retornando respostas em formato **JSON**.
 
-    OBS> Interfaces sofrerão alteração nos nomes futuramente.
-  Esse componente atua de forma independente, pois não necessita de outros componentes para seu funcionamento.
+#### Interfaces Fornecidas
 
-GerenciarReservaService:
-  O componente Gerenciar Reserva foi desenvolvido com FastAPI e tem como finalidade controlar o processo de reserva de bens no sistema, 
-  contemplando dois tipos principais: imóveis e veículos.
-  Esse componente é responsável por receber solicitações de reserva, validar a existência do bem solicitado, verificar se o período informado está disponível e, 
-  caso não exista conflito de datas, registrar a reserva no banco de dados.
-  Assim, ele funciona como a camada responsável pela regra de negócio das reservas, 
-  intermediando a comunicação entre o usuário, o banco de dados e o componente de Gerenciar Bens.
+- `get_clientes()`
+- `login_cliente(email, senha)`
+- `get_cliente(id_cliente: str)`
+- `post_cliente(nome, cpf, email, senha, data_nascimento, numero_telefone)`
 
-  Interface Fornecidas: 
-    reservar_imovel(cpf_cliente, nome_cliente, id_imovel, data_inicio, data_fim)
-    reservar_veiculo(cpf_cliente,nome_cliente, id_veiculo, data_inicio, data_fim)
+> **Observação:** As interfaces poderão sofrer alteração de nomenclatura futuramente.
 
-  Interfaces Requiridas:
-    GerenciarBensService-> buscar_imovel(id)
-                           buscar_veiculo(id)
+Esse componente atua de forma independente, pois não necessita de outros componentes para seu funcionamento.
 
-  A comunicação feita entre o componente de Bens e Reserva é feito via API, 
-  Onde o componente de Reserva consome os endpoints de busca de imovel para realizar a reserva,
-  Assim evitando o acoplamento dos componentes.
-  
+---
+
+### GerenciarBensService
+
+O componente **GerenciarBensService** foi desenvolvido utilizando o framework **FastAPI** e tem como objetivo realizar o gerenciamento de bens cadastrados no sistema, incluindo **imóveis e veículos**.
+
+Esse componente é responsável por disponibilizar serviços de consulta, cadastro e filtragem de bens armazenados no banco de dados **MongoDB**.
+
+Ele atua como uma camada intermediária entre o banco de dados e os consumidores da API, como aplicações **front-end** ou outros serviços do sistema.
+
+#### Interfaces Fornecidas
+
+- `listar_imoveis()`
+
+- `listar_imoveis_filtrados(
+  cidade: Optional[str] = None,
+  estado: Optional[str] = None,
+  qtde_comodos: Optional[int] = None
+  )`
+
+- `buscar_imovel(id)`
+
+- `cadastrar_bem_imovel(
+  cep, endereco, bairro, cidade, estado,
+  numero, complemento, qtde_comodos,
+  metros_quadrados, valor, proprietario
+  )`
+
+- `cadastrar_bem_veiculo(
+  marca, modelo, ano, valor,
+  cep, endereco, bairro, cidade,
+  estado, numero, proprietario
+  )`
+
+- `listar_veiculos()`
+
+- `buscar_veiculo(id)`
+
+- `listar_veiculos_filtrados(
+  cidade: Optional[str] = None,
+  estado: Optional[str] = None,
+  marca: Optional[str] = None,
+  modelo: Optional[str] = None,
+  ano: Optional[int] = None
+  )`
+
+> **Observação:** As interfaces poderão sofrer alteração de nomenclatura futuramente.
+
+Esse componente atua de forma independente, pois não necessita de outros componentes para seu funcionamento.
+
+---
+
+### GerenciarReservaService
+
+O componente **GerenciarReservaService** foi desenvolvido com **FastAPI** e tem como finalidade controlar o processo de **reserva de bens** no sistema, contemplando dois tipos principais:
+
+- Imóveis  
+- Veículos
+
+Esse componente é responsável por:
+
+- Receber solicitações de reserva  
+- Validar a existência do bem solicitado  
+- Verificar se o período informado está disponível  
+- Registrar a reserva no banco de dados caso não exista conflito de datas
+
+Assim, ele funciona como a camada responsável pela **regra de negócio das reservas**, intermediando a comunicação entre o usuário, o banco de dados e o componente de **Gerenciar Bens**.
+
+#### Interfaces Fornecidas
+
+- `reservar_imovel(cpf_cliente, nome_cliente, id_imovel, data_inicio, data_fim)`
+- `reservar_veiculo(cpf_cliente, nome_cliente, id_veiculo, data_inicio, data_fim)`
+  > **Observação:** As interfaces poderão sofrer alteração de nomenclatura futuramente.
+
+#### Interfaces Requeridas
+
+O componente **GerenciarReservaService** depende do componente **GerenciarBensService** para validar a existência dos bens.
+
+- `GerenciarBensService -> buscar_imovel(id)`
+- `GerenciarBensService -> buscar_veiculo(id)`
+
+#### Comunicação entre Componentes
+
+A comunicação entre os componentes **GerenciarReservaService** e **GerenciarBensService** é realizada **via API HTTP**.
+
+O componente de reserva consome os **endpoints de busca de bens** para validar a existência do imóvel ou veículo antes de registrar a reserva.
+
+Essa abordagem evita **acoplamento direto entre os componentes**, permitindo maior modularidade e independência entre os serviços.
+
+
 ## 12 - Execução do Projeto
 
-  Adicione os paramentros de conexão na função do banco de dados (MongoDB) em cada componente.
-  
-  Execute no terminal o comando: docker compose up --build
+### Configuração do MongoDB
 
+  1 - Crie uma conta no MongoDB
+  2 - Crie um cluster com o nome de "componentSoftware"
+  3 - Crie 3 Colletions nesse cluster: "ComponentClientes", "ComponentBens" e "ComponentReserva".
+  4.1 - No ComponentClientes crie a coleção nomeada de "clientes"
+  4.2 - No ComponentBens crie as coleções nomeadas de : "imoveis" e "veiculos"
+  4.3 - No ComponentReserva crie as coleçõoes nomeadas de : "reservaImovel" e "reservaVeiculo"
+
+### Execução do Docker
+
+  1 - Copie a URL do MongoDB e passe os paramentos de credenciais dentro de cada componente.
+
+  2 - Crie as imagens do Docker com o comando: docker compose build
+
+  3 - Crie o servidores dos componentes utilizando o comando: docker compose up
