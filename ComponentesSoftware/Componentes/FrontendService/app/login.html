@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login</title>
-        <style>
-            input{
-                height: 30px;
-                width: 400px;
-                margin: 10px;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
 
-            button {
-                height: 35px;
-                width: 100px;
-                margin: 10px;
-            }
+    <div class="container">
+        <div class="card">
 
-        </style>
-    </head>
-    <body>
-        <input type="email" id = "email" placeholder="Digite seu email"><br>
-        <input type="password" id = "senha" placeholder="Digite sua senha"><br>
-    
-        <button onclick="buscarCliente()" id = "login">Login</button>
+            <h2>Login</h2>
+            <p class="subtitle">Entre na sua conta para continuar</p>
 
-        <a href="./cadastro.html">Não tem uma conta? Cadastre-se aqui</a>
-        
-        <script src="./js/login.js"></script>
-    </body>
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Digite seu email">
+                <input type="password" id="senha" placeholder="Digite sua senha">
+            </div>
+
+            <button onclick="buscarCliente()" id="login">Login</button>
+
+            <a href="./cadastro.html">Não tem uma conta? Cadastre-se aqui</a>
+
+        </div>
+    </div>
+
+    <script src="./js/login.js"></script>
+</body>
 </html>

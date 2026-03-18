@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cadastro de Imovel</title>
-        <style>
-            input{
-                height: 30px;
-                width: 400px;
-                margin: 10px;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Veículo</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
 
-            button {
-                height: 35px;
-                width: 100px;
-                margin: 10px;
-            }
+    <div class="container">
+        <div class="card card-large">
 
-        </style>
-    </head>
-    <body>
+            <h2>Cadastro de Veículo</h2>
+            <p class="subtitle">Preencha os dados do veículo</p>
 
-        <input type="text" id = "marca" placeholder="Digite a marca do veículo"><br>
-        <input type="text" id = "modelo" placeholder="Digite o modelo do veículo"><br>
-        <input type="text" id = "ano" placeholder="Digite o ano do veículo"><br>
-        <input type="text" id = "valor" placeholder="Digite o valor do veículo"><br>
-        <input type="text" id = "cep" placeholder="Digite o CEP do veículo" onfocusout="buscarCep()"><br>
-        <input type="text" id = "endereco" placeholder="Digite o endereço do veículo"><br>
-        <input type="text" id = "bairro" placeholder="Digite o bairro do veículo"><br>
-        <input type="text" id = "cidade" placeholder="Digite a cidade do veículo"><br>
-        <input type="text" id = "estado" placeholder="Digite o estado do veículo"><br>
-        <input type="text" id = "numero" placeholder="Digite o número do veículo"><br>
+            <div class="form-group">
+                <input type="text" id="marca" placeholder="Digite a marca do veículo">
+                <input type="text" id="modelo" placeholder="Digite o modelo do veículo">
+                <input type="text" id="ano" placeholder="Digite o ano do veículo">
+                <input type="text" id="valor" placeholder="Digite o valor do veículo">
+                <input type="text" id="cep" placeholder="Digite o CEP do veículo" onfocusout="buscarCep()">
+                <input type="text" id="endereco" placeholder="Digite o endereço do veículo">
+                <input type="text" id="bairro" placeholder="Digite o bairro do veículo">
+                <input type="text" id="cidade" placeholder="Digite a cidade do veículo">
+                <input type="text" id="estado" placeholder="Digite o estado do veículo">
+                <input type="text" id="numero" placeholder="Digite o número do veículo">
+            </div>
 
-        <button onclick="cadastrarVeiculo()" id = "cadastrar">Cadastrar Veículo</button>
+            <button onclick="cadastrarVeiculo()" id="cadastrar">Cadastrar Veículo</button>
 
-        <a href="./reservaImovel.html">Voltar para Reservar Imovel</a>
-        <a href="./reservaVeiculo.html">Voltar para Reservar Veículo</a>
-        <a href="./cadastrarImovel.html">Cadastrar Imovel</a>
-        
-        <script src="./js/cadastroVeiculo.js"></script>
-        
-    </body>
+            <div class="links-group">
+                <a href="./reservaImovel.html">Voltar para Reservar Imovel</a>
+                <a href="./reservarVeiculo.html">Voltar para Reservar Veículo</a>
+                <a href="./cadastrarImovel.html">Cadastrar Imovel</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="./js/cadastroVeiculo.js"></script>
+
+</body>
 </html>
-

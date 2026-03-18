@@ -2,34 +2,28 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Reserva</title>
-
-    <style>
-        .container{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .card{
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 15px;
-            width: 250px;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .card h3{
-            margin-top: 0;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-    <a href="./reservaImovel.html">Reservar Imovel</a>
-    <a href="./reservarVeiculo.html">Reservar Veículo</a>
-    
-    <button onclick="logout()">Logout</button>
+
+    <div class="container">
+        <div class="card">
+
+            <h2>Reservas</h2>
+            <p class="subtitle">Escolha o que deseja reservar</p>
+
+            <div class="menu-group">
+                <a href="./reservaImovel.html" class="menu-btn">Reservar Imóvel</a>
+                <a href="./reservarVeiculo.html" class="menu-btn">Reservar Veículo</a>
+            </div>
+
+            <button onclick="logout()" id="logout">Logout</button>
+
+        </div>
+    </div>
 
 </body>
 </html>

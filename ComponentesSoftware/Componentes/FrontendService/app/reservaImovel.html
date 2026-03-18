@@ -2,43 +2,45 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reserva de Imoveis</title>
-
-    <style>
-        .container{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .card{
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 15px;
-            width: 250px;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .card h3{
-            margin-top: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
-    <h1>Imóveis disponíveis</h1>
+    <div class="page-wrapper">
+        <div class="container">
+            <div class="card card-wide">
 
-    <input type="date" id="data_inicio" required>
-    <input type="date" id="data_fim" required>
+                <h2>Imóveis disponíveis</h2>
+                <p class="subtitle">Selecione o período desejado para reservar</p>
 
-    <div id="listaImoveis" class="container"></div>
+                <div class="date-group">
+                    <div class="field-group">
+                        <label for="data_inicio">Data de início</label>
+                        <input type="date" id="data_inicio" required>
+                    </div>
 
-    <button onclick="logout()">Logout</button>
+                    <div class="field-group">
+                        <label for="data_fim">Data de fim</label>
+                        <input type="date" id="data_fim" required>
+                    </div>
+                </div>
 
-    <a href="./cadastrarImovel.html">Cadastrar Imovel</a>
-    <a href="./cadastrarVeiculo.html">Cadastrar Veículo</a>
-    <a href="./reservarVeiculo.html">Reservar Veículo</a>
+                <div id="listaImoveis" class="list-grid"></div>
+
+                <button onclick="logout()" id="logout">Logout</button>
+
+                <div class="links-group">
+                    <a href="./cadastrarImovel.html">Cadastrar Imovel</a>
+                    <a href="./cadastrarVeiculo.html">Cadastrar Veículo</a>
+                    <a href="./reservarVeiculo.html">Reservar Veículo</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
     
     <script src="./js/reservaImovel.js"></script>
 

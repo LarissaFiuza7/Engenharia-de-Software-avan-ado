@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cadastro</title>
-        <style>
-            input{
-                height: 30px;
-                width: 400px;
-                margin: 10px;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
 
-            button {
-                height: 35px;
-                width: 100px;
-                margin: 10px;
-            }
+    <div class="container">
+        <div class="card">
 
-        </style>
-    </head>
-    <body>
-        <input type="text" id = "nome_completo" placeholder="Digite seu nome completo"><br>
-        <input type="text" id = "cpf" placeholder="Digite seu CPF"><br>
-        <input type="text" id = "email" placeholder="Digite seu email"><br>
-        <input type="password" id = "senha" placeholder="Digite sua senha"><br>
-        <input type="date" id = "data_nascimento" placeholder="Digite sua data de nascimento"><br>
-        <input type="text" id = "numero_telefone" placeholder="Digite seu número de telefone"><br>
-    
-        <button onclick="criarCliente()" id = "cadastrar">Cadastrar</button>
-        <a href="./login.html">Já tem uma conta? Faça login aqui</a>
-        <script src="./js/cadastro.js"></script>
-        
-    </body>
-</html>]
+            <h2>Cadastro</h2>
+            <p class="subtitle">Crie sua conta para começar</p>
 
+            <div class="form-group">
+                <input type="text" id="nome_completo" placeholder="Digite seu nome completo">
+                <input type="text" id="cpf" placeholder="Digite seu CPF">
+                <input type="text" id="email" placeholder="Digite seu email">
+                <input type="password" id="senha" placeholder="Digite sua senha">
+                <input type="date" id="data_nascimento">
+                <input type="text" id="numero_telefone" placeholder="Digite seu número de telefone">
+            </div>
+
+            <button onclick="criarCliente()" id="cadastrar">Cadastrar</button>
+
+            <a href="./login.html">Já tem uma conta? Faça login aqui</a>
+
+        </div>
+    </div>
+
+    <script src="./js/cadastro.js"></script>
+
+</body>
+</html>
