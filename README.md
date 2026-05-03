@@ -211,137 +211,144 @@ Decisões iniciais (podem ser ajustadas durante o desenvolvimento):
 
 ---
 
-## 11 - Componentes Implementados
+## 11. Arquitetura por Componentes (ESBC)
 
-### ClienteService
+### Descrição dos componentes implementados
 
-O componente **ClienteService** foi implementado utilizando **FastAPI** e tem como objetivo central gerenciar as informações dos clientes no sistema.
+O sistema foi dividido em três componentes principais, cada um com uma responsabilidade própria.
 
-Ele permite realizar operações de listagem, autenticação, busca por identificador e cadastro de novos clientes.
+#### Cliente
 
-O componente atua como uma camada intermediária entre o cliente da aplicação e o banco de dados **MongoDB**, recebendo requisições HTTP, processando regras de negócio e retornando respostas em formato **JSON**.
+Responsável por armazenar e gerenciar os dados dos usuários do sistema.
 
-#### Interfaces Fornecidas
+Funções principais:
 
-- `get_clientes()`
-- `login_cliente(email, senha)`
-- `get_cliente(id_cliente: str)`
-- `post_cliente(nome, cpf, email, senha, data_nascimento, numero_telefone)`
+- Cadastrar cliente
+- Buscar cliente por CPF
+- Buscar cliente por e-mail
 
-> **Observação:** As interfaces poderão sofrer alteração de nomenclatura futuramente.
+#### Bens
 
-Esse componente atua de forma independente, pois não necessita de outros componentes para seu funcionamento.
+Responsável pelo cadastro e controle dos bens disponíveis no sistema.
 
----
+Funções principais:
 
-### GerenciarBensService
+- Cadastrar bens
+- Vincular um bem a um cliente
+- Buscar bem por ID
+- Listar bens cadastrados
 
-O componente **GerenciarBensService** foi desenvolvido utilizando o framework **FastAPI** e tem como objetivo realizar o gerenciamento de bens cadastrados no sistema, incluindo **imóveis e veículos**.
+#### Reserva
 
-Esse componente é responsável por disponibilizar serviços de consulta, cadastro e filtragem de bens armazenados no banco de dados **MongoDB**.
+Responsável pela criação e gerenciamento das reservas.
 
-Ele atua como uma camada intermediária entre o banco de dados e os consumidores da API, como aplicações **front-end** ou outros serviços do sistema.
+Funções principais:
 
-#### Interfaces Fornecidas
-
-- `listar_imoveis()`
-
-- `listar_imoveis_filtrados(
-  cidade: Optional[str] = None,
-  estado: Optional[str] = None,
-  qtde_comodos: Optional[int] = None
-  )`
-
-- `buscar_imovel(id)`
-
-- `cadastrar_bem_imovel(
-  cep, endereco, bairro, cidade, estado,
-  numero, complemento, qtde_comodos,
-  metros_quadrados, valor, proprietario
-  )`
-
-- `cadastrar_bem_veiculo(
-  marca, modelo, ano, valor,
-  cep, endereco, bairro, cidade,
-  estado, numero, proprietario
-  )`
-
-- `listar_veiculos()`
-
-- `buscar_veiculo(id)`
-
-- `listar_veiculos_filtrados(
-  cidade: Optional[str] = None,
-  estado: Optional[str] = None,
-  marca: Optional[str] = None,
-  modelo: Optional[str] = None,
-  ano: Optional[int] = None
-  )`
-
-> **Observação:** As interfaces poderão sofrer alteração de nomenclatura futuramente.
-
-Esse componente atua de forma independente, pois não necessita de outros componentes para seu funcionamento.
+- Criar reserva
+- Verificar cliente
+- Verificar bem
+- Validar datas da reserva
+- Buscar e listar reservas
 
 ---
 
-### GerenciarReservaService
+### Interfaces fornecidas
 
-O componente **GerenciarReservaService** foi desenvolvido com **FastAPI** e tem como finalidade controlar o processo de **reserva de bens** no sistema, contemplando dois tipos principais:
+Cada componente possui uma interface, que funciona como um contrato dizendo quais ações aquele componente oferece para o restante do sistema.
 
-- Imóveis  
-- Veículos
+As interfaces criadas foram:
 
-Esse componente é responsável por:
+- `IClienteComponent`
+- `IBensComponent`
+- `IReservaComponent`
 
-- Receber solicitações de reserva  
-- Validar a existência do bem solicitado  
-- Verificar se o período informado está disponível  
-- Registrar a reserva no banco de dados caso não exista conflito de datas
+Essas interfaces permitem que os componentes sejam usados sem que seja necessário conhecer todos os detalhes internos da implementação.
 
-Assim, ele funciona como a camada responsável pela **regra de negócio das reservas**, intermediando a comunicação entre o usuário, o banco de dados e o componente de **Gerenciar Bens**.
+---
 
-#### Interfaces Fornecidas
+### Interfaces requeridas
 
-- `reservar_imovel(cpf_cliente, nome_cliente, id_imovel, data_inicio, data_fim)`
-- `reservar_veiculo(cpf_cliente, nome_cliente, id_veiculo, data_inicio, data_fim)`
-  > **Observação:** As interfaces poderão sofrer alteração de nomenclatura futuramente.
+Alguns componentes precisam consultar informações de outros componentes para funcionar corretamente.
 
-#### Interfaces Requeridas
+#### Componente Bens
 
-O componente **GerenciarReservaService** depende do componente **GerenciarBensService** para validar a existência dos bens.
+Precisa da interface:
 
-- `GerenciarBensService -> buscar_imovel(id)`
-- `GerenciarBensService -> buscar_veiculo(id)`
+- `IClienteComponent`
 
-#### Comunicação entre Componentes
+Isso acontece porque, antes de cadastrar um bem, o sistema precisa verificar se o cliente informado realmente existe.
 
-A comunicação entre os componentes **GerenciarReservaService** e **GerenciarBensService** é realizada **via API HTTP**.
+#### Componente Reserva
 
-O componente de reserva consome os **endpoints de busca de bens** para validar a existência do imóvel ou veículo antes de registrar a reserva.
+Precisa das interfaces:
 
-Essa abordagem evita **acoplamento direto entre os componentes**, permitindo maior modularidade e independência entre os serviços.
+- `IClienteComponent`
+- `IBensComponent`
 
+Isso acontece porque, antes de criar uma reserva, o sistema precisa confirmar se o cliente existe e se o bem informado também está cadastrado.
 
-## 12 - Execução do Projeto
+---
 
-### Configuração do MongoDB
+### Como ocorre a comunicação entre os componentes
+
+A comunicação entre os componentes acontece de forma organizada por meio das interfaces.
+
+Um componente não acessa diretamente o funcionamento interno do outro. Ele apenas faz uma solicitação usando a interface disponível.
+
+#### Exemplo: cadastro de um bem
+
+Quando um bem é cadastrado, o componente de Bens precisa saber se o CPF informado pertence a um cliente existente.
+
+Então ele consulta o componente de Cliente por meio da interface `IClienteComponent`.
+
+Se o cliente existir, o bem é cadastrado e vinculado ao CPF informado.
+
+Se o cliente não existir, o cadastro não é realizado.
+
+#### Exemplo: criação de uma reserva
+
+Para criar uma reserva, o componente de Reserva faz algumas verificações:
+
+1. Verifica se o cliente existe
+2. Verifica se o bem existe
+3. Verifica se a data final não é anterior à data inicial
+
+Depois dessas validações, a reserva é criada.
+
+Assim, o componente de Reserva não precisa saber como o Cliente ou o Bem são salvos no banco de dados. Ele apenas usa as interfaces para pedir as informações necessárias.
+
+---
+
+### Justificativa de como foi evitado o acoplamento direto
+
+O acoplamento direto foi evitado porque os componentes não dependem diretamente das classes de implementação uns dos outros.
+
+Em vez disso, eles dependem das interfaces.
+
+Por exemplo, o componente de Bens não chama diretamente a classe `ClienteComponentImpl`.
+
+Ele usa a interface `IClienteComponent`.
+
+Da mesma forma, o componente de Reserva usa as interfaces `IClienteComponent` e `IBensComponent`, sem depender diretamente das classes concretas.
+
+Isso deixa o sistema mais organizado, pois cada componente mantém sua própria responsabilidade.
+
+Também facilita futuras alterações. Caso seja necessário mudar a forma como um cliente é buscado ou como um bem é cadastrado, a mudança pode ser feita dentro do componente responsável, sem afetar diretamente os demais.
+
+---
+
+### 12 - Execução do Projeto
+
+#### Configuração do MongoDB
 
   1 - Crie uma conta no MongoDB
   
-  2 - Crie um cluster com o nome de "componentSoftware"
+  2 - Crie um cluster 
   
-  3 - Crie 3 Colletions nesse cluster: "ComponentClientes", "ComponentBens" e "ComponentReserva".
+  3 - Crie 1 Banco de dados nesse cluster.
   
-  4.1 - No ComponentClientes crie a coleção nomeada de "clientes"
-  
-  4.2 - No ComponentBens crie as coleções nomeadas de : "imoveis" e "veiculos"
-  
-  4.3 - No ComponentReserva crie as coleçõoes nomeadas de : "reservaImovel" e "reservaVeiculo"
+  4 - Crie 3 colletions: bens, clientes e reservas
 
-### Execução do Docker
+#### Execução 
 
-  1 - Copie a URL do MongoDB e passe os paramentos de credenciais dentro de cada componente.
-
-  2 - Crie as imagens do Docker com o comando: docker compose build
-
-  3 - Crie o servidores dos componentes utilizando o comando: docker compose up
+  1 - Execute o arquivo MinasmovevidasApplication com os dados desejados.
