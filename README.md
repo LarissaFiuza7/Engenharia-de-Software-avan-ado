@@ -337,7 +337,7 @@ Também facilita futuras alterações. Caso seja necessário mudar a forma como 
 
 ---
 
-### 12 - Execução do Projeto
+### 12 - Execução do Projeto Baseado em Componentes
 
 #### Configuração do MongoDB
 
@@ -352,3 +352,122 @@ Também facilita futuras alterações. Caso seja necessário mudar a forma como 
 #### Execução 
 
   1 - Execute o arquivo MinasmovevidasApplication com os dados desejados.
+
+
+## 13 - Arquitetura Orientada a Serviços (ESOS)
+
+### Para este modulo criamos serviços que realiza o gerenciamento dos nosso clientes, bens e reservas realizadas, onde cada serviço é responsavel por uma parte dele, mantendo o desacoplamento deles.
+### Para isso criamos 3 serviços onde se comunicam via APIs (Dados em formato JSON).
+
+### Serviços
+  - clienteService
+  - gerenciarBens
+  - gerenciarReservas
+
+#### 1. clienteService
+
+  Este serviço é responsal pelo gerenciamento de todos os dados do cliente. Nele realizamos Autenticação(login), registro de usuário e buscas.
+  Dados gerenciados pelo serviço: 
+  
+    - Nome Completo
+    - CPF
+    - E-mail
+    - Senha
+    - Data de Nascimento
+    - Numero de Telefone
+
+  EndPoints post:
+  
+    - (/cliente/cadastrar-cliente/) -> Insere no banco de dados o cliente novo.
+  Endpoints get:
+  
+    - (/cliente/login/) -> Realiza a autenticação do usuário com email e senha.
+    - (/cliente/id/{id_cliente}/) -> Busca um cliente especifico pelo ID
+    - (/cliente/) -> Lista os cliente existentes no banco de dados
+    
+### 2. gerenciarReservaService
+
+  Este serviço é responsavel pelo gerenciamento das reservas, tanto de imoveis quanto de veiculos, nele podemos realizar os registros das resarvas de imovel e veiculo.
+  Dados Gerenciados pelo serviço:
+
+    - CPF do Cliente
+    - Nome do Cliente
+    - ID Veiculo/Imovel
+    - Endereço Veiculo/Imovel
+    - Data de inicio e Fim
+
+  Endpoints post: 
+  
+    - (/gerenciar-reserva/reservar-imovel/) -> Cria o registro da reserva com os dados de cliente, imovel e reserva.
+    - (/gerenciar-reserva/reservar-veiculo/) -> Cria o registro da reserva com os dados de cliente, veiculo e reserva.
+
+### 3. gerenciarBensService 
+
+  Este serviço é responsavel por gerenciar os bens cadastrados no banco de dados, nele podemos realizar cadastro do bem (imovel ou veiculo), busca por bem especifico e listagem de bens.
+  Dados Gerenciados pelo serviço: 
+
+    Imovel
+      - CEP
+      - Endereço
+      - Bairro
+      - Cidade
+      - Estado 
+      - Numero
+      - Complemento
+      - Comodos
+      - M²
+      - Valor 
+      - Dados do Proprietario
+
+    Veiculo
+      - Marca
+      - Modelo
+      - Ano 
+      - Valor 
+      - CEP
+      - Endereço
+      - Bairro 
+      - Cidade
+      - Estado
+      - Numero
+      - Dados do Proprietario
+
+  Endpoints post:
+
+    - (/gerenciar-bens/imoveis/adicionar-imovel/) -> Insere um registro no banco de dados com as informações do imovel
+    - (/gerenciar-bens/veiculos/adicionar-veiculo/) -> Insere um registro no banco de dados com as informações do veiculo
+    
+  Endpoints get:
+  
+    - (/gerenciar-bens/imoveis/) -> Lista todos os imoveis
+    - (/gerenciar-bens/imoveis/filtro/) -> Lista imoveis especificos com base nos filtros inseridos (cidade,estado,qtde_comodos)
+    - (/gerenciar-bens/imoveis/{id}/) -> Retorna um imovel especifico pelo ID dele
+    - (/gerenciar-bens/veiculos/) -> Lista todos os veiculos
+    - (/gerenciar-bens/veiculos/{id}/) -> Retorna um veiculos especifico pelo ID dele
+    - (/gerenciar-bens/veiculos/filtro/) -> Retorna uma lista de imvoeis com base nos filtros inseridos (cidade,estado,marca,modelo,ano)
+
+## 14 - Execução do Projeto Orientado a Serviços
+
+### Configuração do MongoDB
+
+  1 - Crie uma conta no MongoDB
+  
+  2 - Crie um cluster com o nome de "componentSoftware"
+  
+  3 - Crie 3 Colletions nesse cluster: "ComponentClientes", "ComponentBens" e "ComponentReserva".
+  
+  4.1 - No ComponentClientes crie a coleção nomeada de "clientes"
+  
+  4.2 - No ComponentBens crie as coleções nomeadas de : "imoveis" e "veiculos"
+  
+  4.3 - No ComponentReserva crie as coleçõoes nomeadas de : "reservaImovel" e "reservaVeiculo"
+
+### Execução do Docker
+
+  1 - Copie a URL do MongoDB e passe os paramentos de credenciais dentro de cada componente.
+
+  2 - Crie as imagens do Docker com o comando: docker compose build
+
+  3 - Crie o servidores dos componentes utilizando o comando: docker compose up
+
+
